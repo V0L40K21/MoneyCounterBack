@@ -1,4 +1,5 @@
 import {Module} from '@nestjs/common'
+import {ConfigModule} from '@nestjs/config'
 import {APP_GUARD} from '@nestjs/core'
 import {MongooseModule} from '@nestjs/mongoose'
 
@@ -11,7 +12,8 @@ import {AppService} from './app.service'
 
 @Module({
 	imports: [
-		MongooseModule.forRoot('mongodb://localhost:27017/moneyCounter'),
+		ConfigModule.forRoot({isGlobal: true}),
+		MongooseModule.forRoot(process.env.MONGO_URL),
 		UserModule,
 		AuthModule,
 		PaymentMethodModule
