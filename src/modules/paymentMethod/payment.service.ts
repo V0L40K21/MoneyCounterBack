@@ -5,9 +5,10 @@ import {
 	NotFoundException
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import {Model} from 'mongoose'
 
+import {User} from '../user/user.schema'
 import {
 	CreatePaymentMethodDto,
 	DeletePaymentMethodDto,
@@ -15,7 +16,6 @@ import {
 	UpdatePaymentMethodDto
 } from './payment.dto'
 import {PaymentMethod} from './payment.schema'
-import {User} from '../user/user.schema'
 
 @Injectable()
 export class PaymentMethodService {
