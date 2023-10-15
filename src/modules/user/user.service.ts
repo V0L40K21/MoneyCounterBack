@@ -1,12 +1,18 @@
-import {HttpException, HttpStatus, Inject, Injectable, forwardRef} from '@nestjs/common'
+import {
+	HttpException,
+	HttpStatus,
+	Inject,
+	Injectable,
+	forwardRef
+} from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
-import * as bcrypt from 'bcrypt'
-import * as dayjs from 'dayjs'
+import bcrypt from 'bcrypt'
+import dayjs from 'dayjs'
 import {Model} from 'mongoose'
 
+import {AuthService} from '../auth/auth.service'
 import {CreateUserDto} from './user.dto'
 import {User} from './user.schema'
-import {AuthService} from '../auth/auth.service'
 
 @Injectable()
 export class UserService {
@@ -15,7 +21,10 @@ export class UserService {
 		@Inject(forwardRef(() => AuthService)) private authService: AuthService
 	) {}
 
-	async create({email, password}: CreateUserDto): Promise<{access_token: string}> {
+	async create({
+		email,
+		password
+	}: CreateUserDto): Promise<{access_token: string}> {
 		try {
 			const user = await this.userModel.findOne({email})
 			if (user)
@@ -41,7 +50,11 @@ export class UserService {
 	async findByEmail(email: string): Promise<User | undefined> {
 		try {
 			const user = await this.userModel.findOne({email})
-			if (!user) throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND)
+			if (!user)
+				throw new HttpException(
+					'Пользователь не найден',
+					HttpStatus.NOT_FOUND
+				)
 			return user
 		} catch (error) {
 			throw new HttpException(

@@ -1,6 +1,6 @@
 import {Body, Controller, Get, Post, Req} from '@nestjs/common'
 
-import {Public} from 'src/utils/app.constants'
+import {Public} from '../../utils/app.constants'
 import {LoginDto} from './auth.dto'
 import {AuthService} from './auth.service'
 

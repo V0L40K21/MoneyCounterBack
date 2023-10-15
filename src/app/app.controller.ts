@@ -1,7 +1,7 @@
 import {Controller, Get} from '@nestjs/common'
 
 import {AppService} from './app.service'
-import {Public} from 'src/utils/app.constants'
+import {Public} from '../utils/app.constants'
 
 @Controller()
 export class AppController {
