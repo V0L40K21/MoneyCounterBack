@@ -6,8 +6,8 @@ import {
 	forwardRef
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
-import * as bcrypt from 'bcrypt'
-import {Dayjs} from 'dayjs'
+import bcrypt from 'bcrypt'
+import dayjs from 'dayjs'
 import {Model} from 'mongoose'
 
 import {AuthService} from '../auth/auth.service'
@@ -36,7 +36,7 @@ export class UserService {
 			await this.userModel.create({
 				email,
 				password: hashedPassword,
-				createdAt: new Dayjs().unix()
+				createdAt: dayjs().unix()
 			})
 			return await this.authService.signIn({email, password})
 		} catch (error) {
