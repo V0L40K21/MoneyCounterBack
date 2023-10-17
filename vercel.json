@@ -16,5 +16,9 @@
       "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"]
     }
   ],
-  "installCommand": "npm install"
+  "build": {
+    "env": {
+      "installCommand": "npm install"
+    }
+  }
 }
