@@ -1,6 +1,6 @@
 import {NestFactory} from '@nestjs/core'
 import {SwaggerModule} from '@nestjs/swagger'
-import cors from 'cors'
+const cors = require('cors')
 
 import {AppModule} from './app/app.module'
 import {swaggerConfig} from './utils/swagger.config'
