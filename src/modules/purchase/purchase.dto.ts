@@ -21,17 +21,17 @@ export class UpdatePurchaseDto extends OmitType(Purchase, [
 export const purchasePopulate = [
 	{
 		path: 'owner',
-		select: ['_id', 'email'],
+		select: ['_id', 'email', 'createdAt', 'updatedAt'],
 		model: User.name
 	},
 	{
 		path: 'paymentMethod',
-		select: ['name', 'balance'],
+		select: ['name', 'balance', 'createdAt', 'updatedAt'],
 		model: PaymentMethod.name
 	},
 	{
 		path: 'category',
-		select: ['name'],
+		select: ['name', 'createdAt', 'updatedAt'],
 		model: Category.name
 	}
 ]
