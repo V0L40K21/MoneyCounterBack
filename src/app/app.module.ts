@@ -10,6 +10,7 @@ import {PaymentMethodModule} from '../modules/paymentMethod/payment.module'
 import {UserModule} from '../modules/user/user.module'
 import {AppController} from './app.controller'
 import {AppService} from './app.service'
+import {PurchaseModule} from 'src/modules/purchase/purchase.module'
 
 @Module({
 	imports: [
@@ -18,7 +19,8 @@ import {AppService} from './app.service'
 		UserModule,
 		AuthModule,
 		PaymentMethodModule,
-		CategoryModule
+		CategoryModule,
+		PurchaseModule
 	],
 	controllers: [AppController],
 	providers: [

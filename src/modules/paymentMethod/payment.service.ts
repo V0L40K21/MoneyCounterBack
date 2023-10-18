@@ -13,6 +13,7 @@ import {
 	CreatePaymentMethodDto,
 	DeletePaymentMethodDto,
 	FindPaymentMethodDto,
+	PartialPaymentMethod,
 	UpdatePaymentMethodDto
 } from './payment.dto'
 import {PaymentMethod} from './payment.schema'
@@ -93,6 +94,34 @@ export class PaymentMethodService {
 			return await this.paymentModel
 				.findByIdAndDelete(_id)
 				.populate('owner', ['email'], User.name)
+		} catch (error) {
+			throw new HttpException(
+				error.response ?? error,
+				error.status ?? HttpStatus.BAD_REQUEST
+			)
+		}
+	}
+
+	async decrement({_id, sum}: PartialPaymentMethod & {sum: number}) {
+		try {
+			return await this.paymentModel.findByIdAndUpdate(_id, {
+				$inc: {balance: -sum},
+				updatedAt: dayjs().unix()
+			})
+		} catch (error) {
+			throw new HttpException(
+				error.response ?? error,
+				error.status ?? HttpStatus.BAD_REQUEST
+			)
+		}
+	}
+
+	async increment({_id, sum}: PartialPaymentMethod & {sum: number}) {
+		try {
+			return await this.paymentModel.findByIdAndUpdate(_id, {
+				$inc: {balance: sum},
+				updatedAt: dayjs().unix()
+			})
 		} catch (error) {
 			throw new HttpException(
 				error.response ?? error,
