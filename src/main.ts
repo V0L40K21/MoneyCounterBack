@@ -10,6 +10,14 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, swaggerConfig)
 	SwaggerModule.setup('api', app, document)
 	app.enableCors()
-	await app.listen(process.env.PORT || 3000)
+	await app.listen(process.env.PORT || 3000, () => {
+		process
+			.on('unhandledRejection', (reason, promise) =>
+				console.log(reason, 'Unhandled rejection at promise', promise)
+			)
+			.on('uncaughtException', error =>
+				console.log(error, 'Unhandled exceptionthrow')
+			)
+	})
 }
 bootstrap()

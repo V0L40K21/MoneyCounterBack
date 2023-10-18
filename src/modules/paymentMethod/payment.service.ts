@@ -5,7 +5,7 @@ import {
 	NotFoundException
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
-import dayjs from 'dayjs'
+const dayjs = require('dayjs')
 import {Model} from 'mongoose'
 
 import {User} from '../user/user.schema'
@@ -72,7 +72,11 @@ export class PaymentMethodService {
 			const method = await this.paymentModel.findById(_id)
 			if (!method) throw new NotFoundException('Способ платежа не найден')
 			return await this.paymentModel
-				.findByIdAndUpdate(_id, {name, balance}, {new: true})
+				.findByIdAndUpdate(
+					_id,
+					{name, balance, updatedAt: dayjs().unix()},
+					{new: true}
+				)
 				.populate('owner', ['email'], User.name)
 		} catch (error) {
 			throw new HttpException(
