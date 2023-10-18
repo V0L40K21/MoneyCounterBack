@@ -7,8 +7,13 @@ export class CreatePaymentMethodDto extends OmitType(PaymentMethod, [
 	'updatedAt',
 	'createdAt'
 ] as const) {}
-export class FindPaymentMethodDto extends PickType(PartialPaymentMethod, ['_id']) {}
-export class DeletePaymentMethodDto extends PickType(PartialPaymentMethod, [
+export class FindPaymentMethodDto extends PickType(PartialPaymentMethod, [
 	'_id'
 ]) {}
-export class UpdatePaymentMethodDto extends PartialType(CreatePaymentMethodDto) {}
+export class DeletePaymentMethodDto extends PickType(
+	PartialPaymentMethod,
+	['_id']
+) {}
+export class UpdatePaymentMethodDto extends OmitType(PaymentMethod, [
+	'createdAt'
+] as const) {}
