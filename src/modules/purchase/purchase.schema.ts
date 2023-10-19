@@ -37,6 +37,13 @@ export class Purchase extends Document {
 	@Prop({type: Types.ObjectId, ref: Category.name})
 	category: Types.ObjectId
 
+	@ApiProperty({
+		description: 'Пополнение/Затрата',
+		example: 'inc'
+	})
+	@Prop({type: String, required: true})
+	inOut: 'inc' | 'dec'
+
 	@ApiProperty({description: 'Дата создания unix'})
 	@Prop({type: Number})
 	createdAt?: number

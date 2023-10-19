@@ -51,10 +51,12 @@ export class PurchaseService {
 		}
 	}
 
-	async find(owner: Types.ObjectId) {
+	async find(owner: Types.ObjectId, dateRange: string[]) {
 		try {
+			const from = dayjs(dateRange[0]).startOf('D').unix()
+			const to = dayjs(dateRange[1]).endOf('D').unix()
 			return await this.purchaseModel
-				.find({owner})
+				.find({owner, createdAt: {$gte: from, $lte: to}})
 				.populate(purchasePopulate)
 		} catch (error) {
 			throw new HttpException(
