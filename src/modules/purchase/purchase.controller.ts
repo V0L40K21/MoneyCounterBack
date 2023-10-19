@@ -1,7 +1,8 @@
-import {Body, Controller, Get, Post, Req} from '@nestjs/common'
-import {PurchaseService} from './purchase.service'
+import {Body, Controller, Get, Post, Query, Req} from '@nestjs/common'
 import {ApiOperation} from '@nestjs/swagger'
+
 import {CreatePurchaseDto} from './purchase.dto'
+import {PurchaseService} from './purchase.service'
 
 @Controller('/purchase')
 export class PurchaseController {
@@ -27,7 +28,7 @@ export class PurchaseController {
 
 	@Get('/')
 	@ApiOperation({summary: 'Получение списка платежных операций'})
-	async find(@Req() req: any) {
-		return await this.purchaseService.find(req.user?._id)
+	async find(@Req() req: any, @Query('dateRange') dateRange: string[]) {
+		return await this.purchaseService.find(req.user?._id, dateRange)
 	}
 }
