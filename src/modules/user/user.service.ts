@@ -6,9 +6,9 @@ import {
 	forwardRef
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
-import bcrypt from 'bcrypt'
-import dayjs from 'dayjs'
 import {Model} from 'mongoose'
+const bcrypt = require('bcrypt')
+const dayjs = require('dayjs')
 
 import {AuthService} from '../auth/auth.service'
 import {CreateUserDto} from './user.dto'

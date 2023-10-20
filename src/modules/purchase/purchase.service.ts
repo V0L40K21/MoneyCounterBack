@@ -58,6 +58,7 @@ export class PurchaseService {
 			return await this.purchaseModel
 				.find({owner, createdAt: {$gte: from, $lte: to}})
 				.populate(purchasePopulate)
+				.sort({createdAt: 'desc'})
 		} catch (error) {
 			throw new HttpException(
 				error.response ?? error,
