@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common'
+import {Module, forwardRef} from '@nestjs/common'
 import {MongooseModule} from '@nestjs/mongoose'
 
 import {CategoryModule} from '../category/category.module'
@@ -12,8 +12,8 @@ import {PurchaseService} from './purchase.service'
 		MongooseModule.forFeature([
 			{name: Purchase.name, schema: PurchaseSchema}
 		]),
-		PaymentMethodModule,
-		CategoryModule
+		forwardRef(() => PaymentMethodModule),
+		forwardRef(() => CategoryModule)
 	],
 	controllers: [PurchaseController],
 	providers: [PurchaseService],

@@ -44,7 +44,10 @@ export class CategoryController {
 
 	@Delete('/:_id')
 	@ApiOperation({summary: 'Удаление категории'})
-	async deleteCategory(@Param('_id') _id: Types.ObjectId) {
-		return await this.categoryService.delete(_id)
+	async deleteCategory(
+		@Param('_id') _id: Types.ObjectId,
+		@Req() req: any
+	) {
+		return await this.categoryService.delete({_id, owner: req.user?._id})
 	}
 }

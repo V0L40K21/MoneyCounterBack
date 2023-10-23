@@ -1,8 +1,10 @@
 import {
 	HttpException,
 	HttpStatus,
+	Inject,
 	Injectable,
-	NotFoundException
+	NotFoundException,
+	forwardRef
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
 const dayjs = require('dayjs')
@@ -17,12 +19,15 @@ import {
 	UpdatePaymentMethodDto
 } from './payment.dto'
 import {PaymentMethod} from './payment.schema'
+import {PurchaseService} from '../purchase/purchase.service'
 
 @Injectable()
 export class PaymentMethodService {
 	constructor(
 		@InjectModel(PaymentMethod.name)
-		private readonly paymentModel: Model<PaymentMethod>
+		private readonly paymentModel: Model<PaymentMethod>,
+		@Inject(forwardRef(() => PurchaseService))
+		private readonly purchaseService: PurchaseService
 	) {}
 
 	async find(owner: FindPaymentMethodDto): Promise<PaymentMethod[]> {
@@ -44,7 +49,7 @@ export class PaymentMethodService {
 		owner
 	}: CreatePaymentMethodDto): Promise<PaymentMethod> {
 		try {
-			const method = await this.paymentModel.findOne({name})
+			const method = await this.paymentModel.findOne({name, owner})
 			if (method)
 				throw new HttpException(
 					'Способ платежа с таким названием уже существует',
@@ -87,10 +92,14 @@ export class PaymentMethodService {
 		}
 	}
 
-	async delete(_id: DeletePaymentMethodDto): Promise<PaymentMethod> {
+	async delete({
+		_id,
+		owner
+	}: DeletePaymentMethodDto): Promise<PaymentMethod> {
 		try {
 			const method = await this.paymentModel.findById(_id)
 			if (!method) throw new NotFoundException('Способ платежа не найден')
+			await this.purchaseService.deleteByPayment(owner, _id)
 			return await this.paymentModel
 				.findByIdAndDelete(_id)
 				.populate('owner', ['email'], User.name)

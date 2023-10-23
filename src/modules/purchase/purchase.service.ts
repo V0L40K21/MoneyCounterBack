@@ -66,4 +66,35 @@ export class PurchaseService {
 			)
 		}
 	}
+
+	async deleteByCategory(
+		owner: Types.ObjectId,
+		categoryId: Types.ObjectId
+	) {
+		try {
+			return await this.purchaseModel.deleteMany({
+				owner,
+				category: categoryId
+			})
+		} catch (error) {
+			throw new HttpException(
+				error.response ?? error,
+				error.status ?? HttpStatus.BAD_REQUEST
+			)
+		}
+	}
+
+	async deleteByPayment(owner: Types.ObjectId, paymentId: Types.ObjectId) {
+		try {
+			return await this.purchaseModel.deleteMany({
+				owner,
+				paymentMethod: paymentId
+			})
+		} catch (error) {
+			throw new HttpException(
+				error.response ?? error,
+				error.status ?? HttpStatus.BAD_REQUEST
+			)
+		}
+	}
 }

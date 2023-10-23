@@ -9,6 +9,7 @@ export class CreateCategoryDto extends OmitType(Category, [
 ] as const) {}
 export class FindCategoryDto extends PickType(PartialCategory, ['_id']) {}
 export class DeleteCategoryDto extends PickType(PartialCategory, [
+	'owner',
 	'_id'
 ]) {}
 export class UpdateCategoryDto extends OmitType(Category, [
