@@ -1,8 +1,20 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, Req} from '@nestjs/common'
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Req
+} from '@nestjs/common'
 import {ApiOperation} from '@nestjs/swagger'
 import {Types} from 'mongoose'
 
-import {CreatePaymentMethodDto, UpdatePaymentMethodDto} from './payment.dto'
+import {
+	CreatePaymentMethodDto,
+	UpdatePaymentMethodDto
+} from './payment.dto'
 import {PaymentMethodService} from './payment.service'
 
 @Controller('/payment')
@@ -11,7 +23,10 @@ export class PaymentMethodController {
 
 	@Post('/')
 	@ApiOperation({summary: 'Создание способа платежа'})
-	async createPaymentMethod(@Body() dto: CreatePaymentMethodDto, @Req() req: any) {
+	async createPaymentMethod(
+		@Body() dto: CreatePaymentMethodDto,
+		@Req() req: any
+	) {
 		return await this.paymentService.create({...dto, owner: req.user?._id})
 	}
 
@@ -32,7 +47,10 @@ export class PaymentMethodController {
 
 	@Delete('/:_id')
 	@ApiOperation({summary: 'Удаление способа платежа'})
-	async deletePaymentMethod(@Param('_id') _id: Types.ObjectId) {
-		return await this.paymentService.delete(_id)
+	async deletePaymentMethod(
+		@Param('_id') _id: Types.ObjectId,
+		@Req() req: any
+	) {
+		return await this.paymentService.delete({_id, owner: req.user?._id})
 	}
 }

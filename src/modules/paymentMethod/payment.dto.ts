@@ -12,7 +12,7 @@ export class FindPaymentMethodDto extends PickType(PartialPaymentMethod, [
 ]) {}
 export class DeletePaymentMethodDto extends PickType(
 	PartialPaymentMethod,
-	['_id']
+	['_id', 'owner']
 ) {}
 export class UpdatePaymentMethodDto extends OmitType(PaymentMethod, [
 	'createdAt'

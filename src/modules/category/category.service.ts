@@ -1,8 +1,10 @@
 import {
 	HttpException,
 	HttpStatus,
+	Inject,
 	Injectable,
-	NotFoundException
+	NotFoundException,
+	forwardRef
 } from '@nestjs/common'
 import {InjectModel} from '@nestjs/mongoose'
 const dayjs = require('dayjs')
@@ -16,12 +18,15 @@ import {
 	UpdateCategoryDto
 } from './category.dto'
 import {Category} from './category.schema'
+import {PurchaseService} from '../purchase/purchase.service'
 
 @Injectable()
 export class CategoryService {
 	constructor(
 		@InjectModel(Category.name)
-		private readonly categoryModel: Model<Category>
+		private readonly categoryModel: Model<Category>,
+		@Inject(forwardRef(() => PurchaseService))
+		private readonly purchaseService: PurchaseService
 	) {}
 
 	async find(owner: FindCategoryDto): Promise<Category[]> {
@@ -39,7 +44,7 @@ export class CategoryService {
 
 	async create({name, owner}: CreateCategoryDto): Promise<Category> {
 		try {
-			const category = await this.categoryModel.findOne({name})
+			const category = await this.categoryModel.findOne({name, owner})
 			if (category)
 				throw new HttpException(
 					'Категория с таким названием уже существует',
@@ -77,10 +82,11 @@ export class CategoryService {
 		}
 	}
 
-	async delete(_id: DeleteCategoryDto): Promise<Category> {
+	async delete({_id, owner}: DeleteCategoryDto): Promise<Category> {
 		try {
 			const category = await this.categoryModel.findById(_id)
 			if (!category) throw new NotFoundException('Категория не найдена')
+			await this.purchaseService.deleteByCategory(owner, _id)
 			return await this.categoryModel
 				.findByIdAndDelete(_id)
 				.populate('owner', ['email'], User.name)
